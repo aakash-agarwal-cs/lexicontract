@@ -117,7 +117,7 @@ export default function ContractDetailPage() {
   if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
   if (!data) return <div className="p-8 text-center">Contract not found.</div>;
 
-  const { contract, clauses, milestones } = data;
+  const { contract, clauses, milestones, summary } = data;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -134,6 +134,7 @@ export default function ContractDetailPage() {
         {actionError && <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">{actionError}</div>}
         {success && <div className="bg-green-100 text-green-700 p-3 rounded mb-4 text-sm">{success}</div>}
 
+        {/* Contract Header Details */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{contract.title}</h1>
           <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
@@ -148,6 +149,29 @@ export default function ContractDetailPage() {
           </div>
         </div>
 
+        {/* Contract Summary Cards (Added Here) */}
+        {summary && (
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
+              <div className="text-xs font-semibold text-gray-500 uppercase">Total Milestones</div>
+              <div className="text-xl font-bold text-gray-900 mt-1">{summary.total_milestones}</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
+              <div className="text-xs font-semibold text-gray-500 uppercase">Completed</div>
+              <div className="text-xl font-bold text-green-600 mt-1">{summary.completed_milestones}</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
+              <div className="text-xs font-semibold text-gray-500 uppercase">Total Value</div>
+              <div className="text-xl font-bold text-gray-900 mt-1">${Number(summary.total_value).toFixed(2)}</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
+              <div className="text-xs font-semibold text-gray-500 uppercase">Completed Value</div>
+              <div className="text-xl font-bold text-blue-600 mt-1">${Number(summary.completed_value).toFixed(2)}</div>
+            </div>
+          </div>
+        )}
+
+        {/* Clauses Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Clauses ({clauses.length})</h2>
           {clauses.length === 0 ? (
@@ -167,6 +191,7 @@ export default function ContractDetailPage() {
           )}
         </div>
 
+        {/* Milestones Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Milestones ({milestones.length})</h2>
           {milestones.length === 0 ? (
@@ -210,6 +235,7 @@ export default function ContractDetailPage() {
           )}
         </div>
 
+        {/* Add Milestone Form */}
         {user?.role === "ADMIN" ? (
           <div className="bg-white shadow rounded-lg p-6">
             <h2 className="text-lg font-bold text-gray-800 mb-4">Add Milestone (Admin Only)</h2>
