@@ -9,12 +9,52 @@ export async function GET() {
   }
 
   try {
-    // 1. Overall Company & Contract Statistics
+    // 1. Contracts per status (GROUP BY)
+    const statusQuery = `
+      SELECT status, COUNT(*)::INT as count
+      FROM contract
+      GROUP BY status;
+    `;
+    const statusRes = await pool.query(statusQuery);
+
+    // 2. Vendors with contract count (HAVING and ORDER BY)
+    const vendorsQuery = `
+      SELECT v.name, COUNT(c.contract_id)::INT as contract_count
+      FROM vendor v
+      LEFT JOIN contract c ON v.vendor_id = c.vendor_id
+      GROUP BY v.vendor_id, v.name
+      HAVING COUNT(c.contract_id) > 0
+      ORDER BY contract_count DESC;
+    `;
+    const vendorsRes = await pool.query(vendorsQuery);
+
+    // 3. Contracts whose milestone total is above the average (Subquery in WHERE)
+    const aboveAvgQuery = `
+      WITH contract_totals AS (
+          SELECT contract_id, SUM(amount) as total_amount
+          FROM milestone
+          GROUP BY contract_id
+      )
+      SELECT c.title, ct.total_amount
+      FROM contract c
+      JOIN contract_totals ct ON c.contract_id = ct.contract_id
+      WHERE ct.total_amount > (SELECT AVG(total_amount) FROM contract_totals);
+    `;
+    const aboveAvgRes = await pool.query(aboveAvgQuery);
+
+    // 4. Flagged contracts (from view v_pending_contract_reviews)
+    const flaggedQuery = `SELECT * FROM v_pending_contract_reviews;`;
+    const flaggedRes = await pool.query(flaggedQuery);
+
+    // 5. Total Vendors (Count ALL vendors)
+    const totalVendorsQuery = `SELECT COUNT(*)::INT as total_vendors FROM vendor;`;
+    const totalVendorsRes = await pool.query(totalVendorsQuery);
+
+    // 6. Overall statistics
     const statsQuery = `
       SELECT 
         COUNT(c.contract_id)::INT AS total_contracts,
         COALESCE(SUM(m.total_val), 0) AS total_portfolio_value,
-        COUNT(DISTINCT c.vendor_id)::INT AS total_vendors,
         COUNT(CASE WHEN c.status = 'ACTIVE' THEN 1 END)::INT AS active_contracts
       FROM contract c
       LEFT JOIN (
@@ -25,19 +65,15 @@ export async function GET() {
     `;
     const statsRes = await pool.query(statsQuery);
 
-    // 2. Risk-Flagged Clauses across all contracts
-    const flaggedQuery = `
-      SELECT cl.clause_id, cl.clause_type, cl.clause_text, c.title AS contract_title, v.name AS vendor_name
-      FROM clause cl
-      JOIN contract c ON cl.contract_id = c.contract_id
-      JOIN vendor v ON c.vendor_id = v.vendor_id
-      WHERE cl.is_flagged = TRUE;
-    `;
-    const flaggedRes = await pool.query(flaggedQuery);
+    const stats = statsRes.rows[0];
+    stats.total_vendors = totalVendorsRes.rows[0].total_vendors;
 
     return NextResponse.json({
-      stats: statsRes.rows[0] || { total_contracts: 0, total_portfolio_value: 0, total_vendors: 0, active_contracts: 0 },
-      flaggedClauses: flaggedRes.rows,
+      stats: stats,
+      contractsByStatus: statusRes.rows,
+      topVendors: vendorsRes.rows,
+      highValueContracts: aboveAvgRes.rows,
+      flaggedContracts: flaggedRes.rows,
     });
   } catch (err) {
     console.error("API Error in /api/reports:", err);
