@@ -145,3 +145,90 @@ ORDER BY
   CASE WHEN rq.resolution_status = 'UNRESOLVED' THEN 0 ELSE 1 END,
   rq.flagged_at DESC;
 ```
+
+
+---
+
+## Chapter 7 Queries
+
+### 7.1 Aggregate Query with GROUP BY (`07`)
+Groups contracts by lifecycle status and counts totals.
+
+```sql
+SELECT status, COUNT(*)::int AS contract_count
+FROM contract
+GROUP BY status
+ORDER BY contract_count DESC;
+```
+
+### 7.2 Correlated Subquery (`08`)
+Finds milestones whose amount strictly exceeds the average milestone amount for their parent contract.
+
+```sql
+SELECT m.milestone_id, m.contract_id, m.description, m.amount
+FROM milestone m
+WHERE m.amount > (
+  SELECT AVG(m2.amount)
+  FROM milestone m2
+  WHERE m2.contract_id = m.contract_id
+)
+ORDER BY m.contract_id, m.milestone_id;
+```
+
+### 7.3 Nested Query with Subquery in FROM Clause (`09`)
+Aggregates milestone values per contract via an inline subquery and joins with the parent contract.
+
+```sql
+SELECT 
+  c.contract_id,
+  c.title,
+  c.status,
+  COALESCE(m.total_val, 0) AS total_milestone_value
+FROM contract c
+LEFT JOIN (
+  SELECT contract_id, SUM(amount) AS total_val 
+  FROM milestone 
+  GROUP BY contract_id
+) m ON c.contract_id = m.contract_id
+ORDER BY c.contract_id;
+```
+
+### 7.4 Aggregate Query with HAVING & View Selection (`10`)
+Filters grouped contracts possessing 2 or more milestones using HAVING, and queries the pending reviews view.
+
+```sql
+-- HAVING Query
+SELECT 
+  contract_id, 
+  COUNT(*)::int AS milestone_count, 
+  SUM(amount) AS total_contract_value
+FROM milestone
+GROUP BY contract_id
+HAVING COUNT(*) >= 2
+ORDER BY contract_id;
+
+-- View Query
+SELECT * FROM v_pending_contract_reviews;
+```
+
+### 7.5 UPDATE Operation (`11`)
+Updates approval step decisions and transitions contract status to ACTIVE.
+
+```sql
+UPDATE approval_step
+SET status = 'APPROVED', acted_at = CURRENT_TIMESTAMP
+WHERE contract_id = 1 AND approver_id = $approver_id AND status = 'PENDING';
+
+UPDATE contract
+SET status = 'ACTIVE'
+WHERE contract_id = 1;
+```
+
+### 7.6 Controlled DELETE Operation (`12`)
+Deletes an identified single milestone without impacting existing operational data.
+
+```sql
+DELETE FROM milestone
+WHERE milestone_id = $temporary_milestone_id
+RETURNING *;
+```
