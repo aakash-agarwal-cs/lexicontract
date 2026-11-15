@@ -1,0 +1,25 @@
+=== 04: INDEXES (INCLUDING PGVECTOR HNSW COSINE INDEXES) ===
+
+table_name      | index_name                     | index_definition                                                                                        
+----------------|--------------------------------|---------------------------------------------------------------------------------------------------------
+app_user        | app_user_email_key             | CREATE UNIQUE INDEX app_user_email_key ON public.app_user USING btree (email)                           
+app_user        | app_user_pkey                  | CREATE UNIQUE INDEX app_user_pkey ON public.app_user USING btree (user_id)                              
+approval_step   | approval_step_pkey             | CREATE UNIQUE INDEX approval_step_pkey ON public.approval_step USING btree (approval_id)                
+audit_log       | audit_log_pkey                 | CREATE UNIQUE INDEX audit_log_pkey ON public.audit_log USING btree (log_id)                             
+clause          | clause_pkey                    | CREATE UNIQUE INDEX clause_pkey ON public.clause USING btree (clause_id)                                
+clause          | idx_clause_contract_id         | CREATE INDEX idx_clause_contract_id ON public.clause USING btree (contract_id)                          
+clause          | idx_clause_embedding           | CREATE INDEX idx_clause_embedding ON public.clause USING hnsw (embedding vector_cosine_ops)             
+contract        | contract_pkey                  | CREATE UNIQUE INDEX contract_pkey ON public.contract USING btree (contract_id)                          
+contract        | idx_contract_status            | CREATE INDEX idx_contract_status ON public.contract USING btree (status)                                
+milestone       | milestone_pkey                 | CREATE UNIQUE INDEX milestone_pkey ON public.milestone USING btree (milestone_id)                       
+review_queue    | idx_review_status              | CREATE INDEX idx_review_status ON public.review_queue USING btree (resolution_status)                   
+review_queue    | review_queue_clause_id_key     | CREATE UNIQUE INDEX review_queue_clause_id_key ON public.review_queue USING btree (clause_id)           
+review_queue    | review_queue_pkey              | CREATE UNIQUE INDEX review_queue_pkey ON public.review_queue USING btree (review_id)                    
+role            | role_pkey                      | CREATE UNIQUE INDEX role_pkey ON public.role USING btree (role_id)                                      
+role            | role_role_name_key             | CREATE UNIQUE INDEX role_role_name_key ON public.role USING btree (role_name)                           
+standard_clause | idx_std_clause_embedding       | CREATE INDEX idx_std_clause_embedding ON public.standard_clause USING hnsw (embedding vector_cosine_ops)
+standard_clause | standard_clause_pkey           | CREATE UNIQUE INDEX standard_clause_pkey ON public.standard_clause USING btree (standard_clause_id)     
+vendor          | vendor_pkey                    | CREATE UNIQUE INDEX vendor_pkey ON public.vendor USING btree (vendor_id)                                
+vendor          | vendor_registration_number_key | CREATE UNIQUE INDEX vendor_registration_number_key ON public.vendor USING btree (registration_number)   
+
+Total rows: 19

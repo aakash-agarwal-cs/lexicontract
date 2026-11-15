@@ -1,0 +1,13 @@
+=== 16: ATOMIC TRANSACTION ROLLBACK TEST ===
+
+Step 1: BEGIN executed.
+Step 2: Temporary clause inserted with clause_id: 3, clause_type: 'TEST'.
+Step 3: Simulating application or constraint error before commit...
+Step 4: Error caught: "Simulated failure to verify atomic ROLLBACK!". Executing ROLLBACK...
+Step 5: ROLLBACK executed.
+
+Verification Query:
+SELECT COUNT(*) FROM clause WHERE clause_type = 'TEST';
+Count: 0
+
+>>> RESULT: SUCCESS! Rollback confirmed, 0 uncommitted rows exist.

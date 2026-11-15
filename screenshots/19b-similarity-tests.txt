@@ -1,0 +1,38 @@
+=== 19B: PGVECTOR SIMILARITY TESTS (find_similar_standard_clauses) ===
+
+Target Clause Type: Termination
+Standard Template Text:
+"Either party may terminate this Agreement without cause by providing at least thirty (30) days prior written notice to the other party. In the event of a material breach, the non-breaching party may terminate immediately if such breach is not cured within fifteen (15) days of receipt of written notice. Upon termination, the vendor shall be compensated for all satisfactory services rendered up to the effective termination date."
+
+--- Test (a): Exact Standard Clause Embedding (Self-Match) ---
+Input: "Either party may terminate this Agreement without cause by providing at least thirty (30) days prior written notice to the other party. In the event of a material breach, the non-breaching party may terminate immediately if such breach is not cured within fifteen (15) days of receipt of written notice. Upon termination, the vendor shall be compensated for all satisfactory services rendered up to the effective termination date."
+Results:
+standard_clause_id | clause_type | preview                                                         | similarity
+-------------------|-------------|-----------------------------------------------------------------|-----------
+1                  | Termination | Either party may terminate this Agreement without cause by p... | 1         
+
+Total rows: 1
+
+Score: 1.0000 (matches expectation: ~1.000)
+
+--- Test (b): Realistic Paraphrase of Termination Clause ---
+Input: "This agreement may be ended by either company by providing thirty days written notice beforehand, and pending fees shall be paid."
+Results:
+standard_clause_id | clause_type | preview                                                         | similarity       
+-------------------|-------------|-----------------------------------------------------------------|------------------
+1                  | Termination | Either party may terminate this Agreement without cause by p... | 0.629634637523737
+
+Total rows: 1
+
+Score: 0.6296 (well above 0.600 threshold -> SAFE)
+
+--- Test (c): Completely Unrelated Sentence ---
+Input: "The vendor shall deliver twenty fresh apples and oranges to the central market every Monday."
+Results:
+standard_clause_id | clause_type | preview                                                         | similarity        
+-------------------|-------------|-----------------------------------------------------------------|-------------------
+1                  | Termination | Either party may terminate this Agreement without cause by p... | 0.0874730322518045
+
+Total rows: 1
+
+Score: 0.0875 (far below 0.600 threshold -> RISKY / FLAGGED)

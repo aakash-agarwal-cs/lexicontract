@@ -1,0 +1,15 @@
+=== 18: MILESTONE DATE TRIGGER REJECTION TEST ===
+
+Testing trigger trg_check_milestone_date with due_date '2029-12-31' outside Contract 1 validity period (2026-01-01 to 2027-01-01).
+
+Expected Rejection Caught:
+Code: P0001
+Message: Milestone due_date (2029-12-31) must fall within the contract validity period (2026-01-01 to 2027-01-01)
+Detail: None
+Where: PL/pgSQL function check_milestone_date_range() line 15 at RAISE
+
+Verification Query:
+SELECT COUNT(*) FROM milestone WHERE description = 'Invalid Future Milestone Beyond Contract End';
+Rows found: 0
+
+>>> RESULT: SUCCESS! Trigger actively rejected bad due_date and prevented row insertion.

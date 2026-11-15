@@ -1,0 +1,9 @@
+--- TABLE: approval_step (Count: 2) ---
+SQL: SELECT approval_id, contract_id, approver_id, status, acted_at FROM approval_step ORDER BY approval_id
+
+approval_id | contract_id | approver_id | status  | acted_at
+------------|-------------|-------------|---------|---------
+1           | 1           | 1           | PENDING |         
+2           | 1           | 3           | PENDING |         
+
+Total rows: 2

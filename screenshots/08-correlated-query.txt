@@ -1,0 +1,20 @@
+=== 08: CORRELATED SUBQUERY (MILESTONES EXCEEDING CONTRACT AVERAGE) ===
+
+SQL:
+SELECT m.milestone_id, m.contract_id, m.description, m.amount
+      FROM milestone m
+      WHERE m.amount > (
+        SELECT AVG(m2.amount)
+        FROM milestone m2
+        WHERE m2.contract_id = m.contract_id
+      )
+      ORDER BY m.contract_id, m.milestone_id;
+
+OUTPUT:
+milestone_id | contract_id | description                                   | amount  
+-------------|-------------|-----------------------------------------------|---------
+6            | 1           | Alpha Release and Core Backend Implementation | 25000.00
+9            | 2           | Compliance Verification Phase 1               | 7500.00 
+10           | 2           | Final Compliance Sign-off                     | 7500.00 
+
+Total rows: 3

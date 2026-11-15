@@ -1,0 +1,23 @@
+=== 09: NESTED SUBQUERY (CONTRACT PORTFOLIO FROM REPORTS API) ===
+
+SQL:
+SELECT 
+        c.contract_id,
+        c.title,
+        c.status,
+        COALESCE(m.total_val, 0) AS total_milestone_value
+      FROM contract c
+      LEFT JOIN (
+        SELECT contract_id, SUM(amount) AS total_val 
+        FROM milestone 
+        GROUP BY contract_id
+      ) m ON c.contract_id = m.contract_id
+      ORDER BY c.contract_id;
+
+OUTPUT:
+contract_id | title                          | status | total_milestone_value
+------------|--------------------------------|--------|----------------------
+1           | Acme Master Services Agreement | ACTIVE | 50000.00             
+2           | Globex Delivery SOW            | DRAFT  | 20000.00             
+
+Total rows: 2

@@ -1,0 +1,31 @@
+=== 10A: HAVING QUERY (CONTRACTS WITH >= 2 MILESTONES) ===
+
+SQL:
+SELECT 
+        contract_id, 
+        COUNT(*)::int AS milestone_count, 
+        SUM(amount) AS total_contract_value
+      FROM milestone
+      GROUP BY contract_id
+      HAVING COUNT(*) >= 2
+      ORDER BY contract_id;
+
+OUTPUT:
+contract_id | milestone_count | total_contract_value
+------------|-----------------|---------------------
+1           | 3               | 50000.00            
+2           | 3               | 20000.00            
+
+Total rows: 2
+
+=== 10B: VIEW: v_pending_contract_reviews ===
+
+SQL:
+SELECT * FROM v_pending_contract_reviews;
+
+OUTPUT:
+contract_id | title                          | vendor_name           | flagged_clause_count
+------------|--------------------------------|-----------------------|---------------------
+1           | Acme Master Services Agreement | Acme Supplies Pvt Ltd | 2                   
+
+Total rows: 1

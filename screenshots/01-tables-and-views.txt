@@ -1,0 +1,17 @@
+=== 01: TABLES AND VIEWS (PUBLIC SCHEMA) ===
+
+table_name                 | table_type
+---------------------------|-----------
+app_user                   | BASE TABLE
+approval_step              | BASE TABLE
+audit_log                  | BASE TABLE
+clause                     | BASE TABLE
+contract                   | BASE TABLE
+milestone                  | BASE TABLE
+review_queue               | BASE TABLE
+role                       | BASE TABLE
+standard_clause            | BASE TABLE
+vendor                     | BASE TABLE
+v_pending_contract_reviews | VIEW      
+
+Total rows: 11

@@ -1,0 +1,9 @@
+--- TABLE: role (Count: 2) ---
+SQL: SELECT role_id, role_name FROM role ORDER BY role_id
+
+role_id | role_name
+--------|----------
+1       | ADMIN    
+2       | REVIEWER 
+
+Total rows: 2

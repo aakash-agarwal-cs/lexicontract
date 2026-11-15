@@ -1,0 +1,9 @@
+--- TABLE: vendor (Count: 2) ---
+SQL: SELECT vendor_id, name, registration_number, contact_email, contact_phone FROM vendor ORDER BY vendor_id
+
+vendor_id | name                  | registration_number | contact_email        | contact_phone
+----------|-----------------------|---------------------|----------------------|--------------
+1         | Acme Supplies Pvt Ltd | REG-1001            | contact@acme.example | 9000000001   
+2         | Globex Logistics      | REG-1002            | hello@globex.example | 9000000002   
+
+Total rows: 2

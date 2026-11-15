@@ -1,0 +1,28 @@
+=== 19: SEED STANDARD CLAUSES EVIDENCE ===
+
+Command:
+node --env-file=.env.local scripts/seed-standard-clauses.mjs
+
+Console Output:
+Successfully inserted 8 standard clauses.
+
+Verification Query:
+SELECT standard_clause_id, clause_type, vector_dims(embedding) AS vector_dims
+      FROM standard_clause
+      ORDER BY standard_clause_id;
+
+Database Rows:
+standard_clause_id | clause_type        | vector_dims
+-------------------|--------------------|------------
+1                  | Termination        | 384        
+2                  | Liability Cap      | 384        
+3                  | Confidentiality    | 384        
+4                  | Payment Terms      | 384        
+5                  | Indemnity          | 384        
+6                  | Governing Law      | 384        
+7                  | Force Majeure      | 384        
+8                  | Dispute Resolution | 384        
+
+Total rows: 8
+
+All 8 standard clauses have exactly 384 dimensions.

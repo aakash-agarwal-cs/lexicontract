@@ -1,0 +1,120 @@
+=== DML EVIDENCE: ALL TABLES (06) ===
+
+--- TABLE: role (Count: 2) ---
+SQL: SELECT role_id, role_name FROM role ORDER BY role_id
+
+role_id | role_name
+--------|----------
+1       | ADMIN    
+2       | REVIEWER 
+
+Total rows: 2
+
+
+--- TABLE: app_user (Count: 4) ---
+SQL: SELECT user_id, full_name, email, '[MASKED]' AS password_hash, role_id FROM app_user ORDER BY user_id
+
+user_id | full_name      | email                      | password_hash | role_id
+--------|----------------|----------------------------|---------------|--------
+1       | Aakash Agarwal | aakashagarwal126@gmail.com | [MASKED]      | 1      
+2       | Aditya Sehal   | adityasehal07@gmail.com    | [MASKED]      | 1      
+3       | Krish          | krishg@gmail.com           | [MASKED]      | 2      
+4       | aditya raj     | anitasinha0969@gmail.com   | [MASKED]      | 2      
+
+Total rows: 4
+
+
+--- TABLE: vendor (Count: 2) ---
+SQL: SELECT vendor_id, name, registration_number, contact_email, contact_phone FROM vendor ORDER BY vendor_id
+
+vendor_id | name                  | registration_number | contact_email        | contact_phone
+----------|-----------------------|---------------------|----------------------|--------------
+1         | Acme Supplies Pvt Ltd | REG-1001            | contact@acme.example | 9000000001   
+2         | Globex Logistics      | REG-1002            | hello@globex.example | 9000000002   
+
+Total rows: 2
+
+
+--- TABLE: standard_clause (Count: 0) ---
+SQL: SELECT standard_clause_id, clause_type, clause_text, 
+             vector_dims(embedding) AS vector_dims, 
+             left(embedding::text, 40) || '...' AS embedding_preview 
+      FROM standard_clause ORDER BY standard_clause_id
+
+No rows found.
+
+
+--- TABLE: contract (Count: 2) ---
+SQL: SELECT contract_id, vendor_id, created_by, title, contract_type, status, start_date, end_date FROM contract ORDER BY contract_id
+
+contract_id | vendor_id | created_by | title                          | contract_type | status           | start_date                                              | end_date                                               
+------------|-----------|------------|--------------------------------|---------------|------------------|---------------------------------------------------------|--------------------------------------------------------
+1           | 1         | 1          | Acme Master Services Agreement | MSA           | PENDING_APPROVAL | Thu Jan 01 2026 00:00:00 GMT+0530 (India Standard Time) | Fri Jan 01 2027 00:00:00 GMT+0530 (India Standard Time)
+2           | 2         | 1          | Globex Delivery SOW            | SOW           | DRAFT            | Sun Mar 01 2026 00:00:00 GMT+0530 (India Standard Time) | Thu Dec 31 2026 00:00:00 GMT+0530 (India Standard Time)
+
+Total rows: 2
+
+
+--- TABLE: clause (Count: 1) ---
+SQL: SELECT clause_id, contract_id, clause_text, clause_type, is_flagged, 
+             vector_dims(embedding) AS vector_dims, 
+             left(embedding::text, 40) || '...' AS embedding_preview 
+      FROM clause ORDER BY clause_id
+
+clause_id | contract_id | clause_text                                                                     | clause_type | is_flagged | vector_dims | embedding_preview                          
+----------|-------------|---------------------------------------------------------------------------------|-------------|------------|-------------|--------------------------------------------
+1         | 1           | Either party may terminate this agreement upon thirty (30) days written notice. | TERMINATION | true       | 384         | [0.016872235,0.059388466,0.050099757,-0....
+
+Total rows: 1
+
+
+--- TABLE: approval_step (Count: 2) ---
+SQL: SELECT approval_id, contract_id, approver_id, status, acted_at FROM approval_step ORDER BY approval_id
+
+approval_id | contract_id | approver_id | status  | acted_at
+------------|-------------|-------------|---------|---------
+1           | 1           | 1           | PENDING |         
+2           | 1           | 3           | PENDING |         
+
+Total rows: 2
+
+
+--- TABLE: milestone (Count: 7) ---
+SQL: SELECT milestone_id, contract_id, description, due_date, amount, status FROM milestone ORDER BY milestone_id
+
+milestone_id | contract_id | description                                   | due_date                                                | amount   | status   
+-------------|-------------|-----------------------------------------------|---------------------------------------------------------|----------|----------
+5            | 1           | Initial Architecture Design & Review          | Sun Mar 15 2026 00:00:00 GMT+0530 (India Standard Time) | 15000.00 | COMPLETED
+6            | 1           | Alpha Release and Core Backend Implementation | Fri May 01 2026 00:00:00 GMT+0530 (India Standard Time) | 25000.00 | PENDING  
+7            | 1           | Beta Testing and Security Audit               | Wed Jul 15 2026 00:00:00 GMT+0530 (India Standard Time) | 10000.00 | PENDING  
+8            | 2           | Legal Documentation Handover                  | Tue Feb 10 2026 00:00:00 GMT+0530 (India Standard Time) | 5000.00  | COMPLETED
+9            | 2           | Compliance Verification Phase 1               | Wed Apr 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+10           | 2           | Final Compliance Sign-off                     | Mon Jun 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+11           | 2           | wfefsdfs                                      | Thu Jun 11 2026 00:00:00 GMT+0530 (India Standard Time) | 20000.00 | PENDING  
+
+Total rows: 7
+
+
+--- TABLE: review_queue (Count: 1) ---
+SQL: SELECT review_id, clause_id, reviewed_by, flagged_at, resolution_status FROM review_queue ORDER BY review_id
+
+review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
+----------|-----------|-------------|---------------------------------------------------------|------------------
+1         | 1         | 1           | Sun Nov 15 2026 15:46:16 GMT+0530 (India Standard Time) | ACCEPTED         
+
+Total rows: 1
+
+
+--- TABLE: audit_log (Count: 4) ---
+SQL: SELECT log_id, user_id, action, entity, entity_id, created_at FROM audit_log ORDER BY log_id DESC
+
+log_id | user_id | action                            | entity   | entity_id | created_at                                             
+-------|---------|-----------------------------------|----------|-----------|--------------------------------------------------------
+4      |         | STATUS ACTIVE -> PENDING_APPROVAL | contract | 1         | Sun Nov 15 2026 15:50:11 GMT+0530 (India Standard Time)
+3      | 3       | STATUS PENDING_APPROVAL -> ACTIVE | contract | 1         | Sun Nov 15 2026 15:49:57 GMT+0530 (India Standard Time)
+2      |         | STATUS ACTIVE -> PENDING_APPROVAL | contract | 1         | Sun Nov 15 2026 15:47:24 GMT+0530 (India Standard Time)
+1      |         | STATUS PENDING_APPROVAL -> ACTIVE | contract | 1         | Sun Nov 01 2026 08:27:27 GMT+0530 (India Standard Time)
+
+Total rows: 4
+
+

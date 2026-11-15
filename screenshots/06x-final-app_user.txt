@@ -1,0 +1,11 @@
+--- TABLE: app_user (Count: 4) ---
+SQL: SELECT user_id, full_name, email, '[MASKED]' AS password_hash, role_id FROM app_user ORDER BY user_id
+
+user_id | full_name      | email                      | password_hash | role_id
+--------|----------------|----------------------------|---------------|--------
+1       | Aakash Agarwal | aakashagarwal126@gmail.com | [MASKED]      | 1      
+2       | Aditya Sehal   | adityasehal07@gmail.com    | [MASKED]      | 1      
+3       | Krish          | krishg@gmail.com           | [MASKED]      | 2      
+4       | aditya raj     | anitasinha0969@gmail.com   | [MASKED]      | 2      
+
+Total rows: 4

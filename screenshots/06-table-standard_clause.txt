@@ -1,0 +1,7 @@
+--- TABLE: standard_clause (Count: 0) ---
+SQL: SELECT standard_clause_id, clause_type, clause_text, 
+             vector_dims(embedding) AS vector_dims, 
+             left(embedding::text, 40) || '...' AS embedding_preview 
+      FROM standard_clause ORDER BY standard_clause_id
+
+No rows found.

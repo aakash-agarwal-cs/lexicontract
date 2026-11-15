@@ -1,0 +1,47 @@
+=== 20: CLAUSE FLAGGING & REVIEW QUEUE DEMO EVIDENCE ===
+
+--- 1. Safe Clause Insertion ---
+Type: Termination
+Input: "This agreement may be ended by either company by providing thirty days written notice beforehand, and pending fees shall be paid."
+Result:
+- Best Similarity Score: 0.6296 (Threshold: 0.600)
+- is_flagged: false
+- Outcome: Clause accepted safely without flagging.
+
+--- 2. Risky Clause Insertion ---
+Type: Termination
+Input: "The client reserves the sole and exclusive right to instantly cancel all project activities without financial settlement, penalty, or prior announcement."
+Result:
+- Best Similarity Score: 0.3824 (Threshold: 0.600)
+- is_flagged: true
+- Review Queue ID: 2
+- Outcome: Low similarity triggered atomic flagging and routing to review_queue.
+
+--- 3. Database Clause Verification ---
+clause_id | contract_id | clause_type | is_flagged | text_preview                                                        
+----------|-------------|-------------|------------|---------------------------------------------------------------------
+5         | 1           | Termination | false      | This agreement may be ended by either company by providing thirty...
+6         | 1           | Termination | true       | The client reserves the sole and exclusive right to instantly can...
+
+Total rows: 2
+
+
+--- 4. Initial Review Queue Record (Pre-Resolution) ---
+review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
+----------|-----------|-------------|---------------------------------------------------------|------------------
+2         | 6         |             | Sun Nov 15 2026 20:19:50 GMT+0530 (India Standard Time) | UNRESOLVED       
+
+Total rows: 1
+
+
+--- 5. Resolved Review Queue Record (Post-Resolution by Admin) ---
+SQL Executed:
+UPDATE review_queue SET resolution_status = 'ACCEPTED', reviewed_by = 1 WHERE review_id = 2 RETURNING *;
+
+Updated Row:
+review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
+----------|-----------|-------------|---------------------------------------------------------|------------------
+2         | 6         | 1           | Sun Nov 15 2026 20:19:50 GMT+0530 (India Standard Time) | ACCEPTED         
+
+Total rows: 1
+

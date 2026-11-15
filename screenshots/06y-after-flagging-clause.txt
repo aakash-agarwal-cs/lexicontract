@@ -1,0 +1,13 @@
+--- TABLE: clause (Count: 3) ---
+SQL: SELECT clause_id, contract_id, clause_text, clause_type, is_flagged, 
+               vector_dims(embedding) AS vector_dims, 
+               left(embedding::text, 40) || '...' AS embedding_preview 
+        FROM clause ORDER BY clause_id;
+
+clause_id | contract_id | clause_text                                                                                                                                               | clause_type | is_flagged | vector_dims | embedding_preview                          
+----------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|------------|-------------|--------------------------------------------
+1         | 1           | Either party may terminate this agreement upon thirty (30) days written notice.                                                                           | TERMINATION | true       | 384         | [0.016872235,0.059388466,0.050099757,-0....
+5         | 1           | This agreement may be ended by either company by providing thirty days written notice beforehand, and pending fees shall be paid.                         | Termination | false      | 384         | [0.01619367,0.020765496,0.028218038,-0.0...
+6         | 1           | The client reserves the sole and exclusive right to instantly cancel all project activities without financial settlement, penalty, or prior announcement. | Termination | true       | 384         | [-0.022497099,0.12855953,-0.0077905776,-...
+
+Total rows: 3

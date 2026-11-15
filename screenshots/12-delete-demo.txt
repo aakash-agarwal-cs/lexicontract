@@ -1,0 +1,26 @@
+=== 12: CONTROLLED DELETE DEMONSTRATION ===
+
+1. Milestone Count BEFORE Insert: 7
+
+2. Temporary Row Inserted:
+milestone_id | contract_id | description                                      | due_date                                                | amount | status 
+-------------|-------------|--------------------------------------------------|---------------------------------------------------------|--------|--------
+16           | 1           | Temporary Demo Milestone for DELETE Verification | Sat Aug 15 2026 00:00:00 GMT+0530 (India Standard Time) | 500.00 | PENDING
+
+Total rows: 1
+
+Milestone Count AFTER Insert: 8
+
+3. SQL Executed:
+DELETE FROM milestone WHERE milestone_id = 16 RETURNING *;
+
+Deleted Row:
+milestone_id | contract_id | description                                      | due_date                                                | amount | status 
+-------------|-------------|--------------------------------------------------|---------------------------------------------------------|--------|--------
+16           | 1           | Temporary Demo Milestone for DELETE Verification | Sat Aug 15 2026 00:00:00 GMT+0530 (India Standard Time) | 500.00 | PENDING
+
+Total rows: 1
+
+
+4. Milestone Count AFTER Delete: 7
+Verification: Exactly returned to original count (7 == 7). Pre-existing rows untouched.

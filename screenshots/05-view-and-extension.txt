@@ -1,0 +1,23 @@
+=== 05A: VIEW DEFINITIONS ===
+
+table_name                 | view_definition                                                                                                                                                                                                                                                                                                              
+---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+v_pending_contract_reviews |  SELECT c.contract_id,
+    c.title,
+    v.name AS vendor_name,
+    count(cl.clause_id) AS flagged_clause_count
+   FROM ((contract c
+     JOIN vendor v ON ((c.vendor_id = v.vendor_id)))
+     JOIN clause cl ON ((c.contract_id = cl.contract_id)))
+  WHERE (cl.is_flagged = true)
+  GROUP BY c.contract_id, c.title, v.name;
+
+Total rows: 1
+
+=== 05B: PGVECTOR EXTENSION VERSION ===
+
+name   | default_version | installed_version | comment                                             
+-------|-----------------|-------------------|-----------------------------------------------------
+vector | 0.8.2           | 0.8.2             | vector data type and ivfflat and hnsw access methods
+
+Total rows: 1

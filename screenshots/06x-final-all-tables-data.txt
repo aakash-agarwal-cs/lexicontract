@@ -1,0 +1,134 @@
+=== DML EVIDENCE: ALL TABLES (06x-final) ===
+
+--- TABLE: role (Count: 2) ---
+SQL: SELECT role_id, role_name FROM role ORDER BY role_id
+
+role_id | role_name
+--------|----------
+1       | ADMIN    
+2       | REVIEWER 
+
+Total rows: 2
+
+
+--- TABLE: app_user (Count: 4) ---
+SQL: SELECT user_id, full_name, email, '[MASKED]' AS password_hash, role_id FROM app_user ORDER BY user_id
+
+user_id | full_name      | email                      | password_hash | role_id
+--------|----------------|----------------------------|---------------|--------
+1       | Aakash Agarwal | aakashagarwal126@gmail.com | [MASKED]      | 1      
+2       | Aditya Sehal   | adityasehal07@gmail.com    | [MASKED]      | 1      
+3       | Krish          | krishg@gmail.com           | [MASKED]      | 2      
+4       | aditya raj     | anitasinha0969@gmail.com   | [MASKED]      | 2      
+
+Total rows: 4
+
+
+--- TABLE: vendor (Count: 2) ---
+SQL: SELECT vendor_id, name, registration_number, contact_email, contact_phone FROM vendor ORDER BY vendor_id
+
+vendor_id | name                  | registration_number | contact_email        | contact_phone
+----------|-----------------------|---------------------|----------------------|--------------
+1         | Acme Supplies Pvt Ltd | REG-1001            | contact@acme.example | 9000000001   
+2         | Globex Logistics      | REG-1002            | hello@globex.example | 9000000002   
+
+Total rows: 2
+
+
+--- TABLE: standard_clause (Count: 8) ---
+SQL: SELECT standard_clause_id, clause_type, clause_text, 
+             vector_dims(embedding) AS vector_dims, 
+             left(embedding::text, 40) || '...' AS embedding_preview 
+      FROM standard_clause ORDER BY standard_clause_id
+
+standard_clause_id | clause_type        | clause_text                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | vector_dims | embedding_preview                          
+-------------------|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|--------------------------------------------
+1                  | Termination        | Either party may terminate this Agreement without cause by providing at least thirty (30) days prior written notice to the other party. In the event of a material breach, the non-breaching party may terminate immediately if such breach is not cured within fifteen (15) days of receipt of written notice. Upon termination, the vendor shall be compensated for all satisfactory services rendered up to the effective termination date.                                                                                                            | 384         | [0.0031914907,0.078525975,0.09006052,-0....
+2                  | Liability Cap      | Except for breaches of confidentiality obligations or gross negligence, neither party shall be liable for any indirect, incidental, or consequential damages arising out of this Agreement. The total aggregate liability of either party for all claims connected with this Agreement shall be limited to the total fees paid or payable by the client in the preceding twelve (12) month period.                                                                                                                                                        | 384         | [-0.049127735,0.058041386,0.014167776,-0...
+3                  | Confidentiality    | Each party agrees to maintain the strict confidentiality of all proprietary or non-public information disclosed by the other party and identified as confidential. The receiving party shall not disclose such confidential information to any third party without prior written consent, except to employees and contractors on a need-to-know basis. These confidentiality obligations shall survive the expiration or termination of this Agreement for a period of three (3) years.                                                                   | 384         | [-0.07536304,0.06131742,-0.00510611,-0.0...
+4                  | Payment Terms      | The client shall pay all undisputed invoice amounts within thirty (30) days of the invoice receipt date. Invoices shall detail the specific deliverables completed and applicable milestone fees in accordance with the agreed Statement of Work. Any disputed amounts must be communicated in writing within ten (10) business days, with undisputed portions paid promptly.                                                                                                                                                                             | 384         | [-0.08524269,0.10461993,0.0140906535,-0....
+5                  | Indemnity          | Each party shall defend, indemnify, and hold harmless the other party against third-party claims arising directly from material breach of contractual obligations or infringement of intellectual property rights. The indemnified party shall provide prompt written notice of any claim and grant the indemnifying party reasonable control over the defense. Neither party shall settle any claim that imposes financial or operational liability on the other party without prior written consent.                                                    | 384         | [-0.08960913,0.09188979,-0.026812341,-0....
+6                  | Governing Law      | This Agreement shall be governed by, interpreted, and construed in accordance with the substantive laws of India, without regard to its conflict of law principles. The courts located in Bengaluru, Karnataka shall have exclusive jurisdiction over any legal proceedings arising from or relating to this Agreement.                                                                                                                                                                                                                                   | 384         | [-0.019521102,0.08370598,-0.046254195,-0...
+7                  | Force Majeure      | Neither party shall be held liable or responsible for failure or delay in fulfilling its obligations if such delay arises from events beyond reasonable control, including natural disasters, acts of war, strikes, or governmental restrictions. The affected party shall promptly notify the other party in writing and use commercially reasonable efforts to resume performance as soon as practicable. If the force majeure event continues for more than sixty (60) consecutive days, either party may terminate the Agreement upon written notice. | 384         | [0.0023548827,0.023405472,0.059451222,0....
+8                  | Dispute Resolution | In the event of any controversy or dispute arising under this Agreement, the parties shall first attempt in good faith to resolve the matter through informal executive consultations within thirty (30) days. If the dispute remains unresolved, it shall be referred to and finally resolved by binding arbitration conducted under the Arbitration and Conciliation Act, 1996 in Bengaluru, India. Each party shall bear its own legal expenses unless otherwise determined in the arbitral award.                                                     | 384         | [-0.008645271,0.07113409,0.0122763505,-0...
+
+Total rows: 8
+
+
+--- TABLE: contract (Count: 2) ---
+SQL: SELECT contract_id, vendor_id, created_by, title, contract_type, status, start_date, end_date FROM contract ORDER BY contract_id
+
+contract_id | vendor_id | created_by | title                          | contract_type | status | start_date                                              | end_date                                               
+------------|-----------|------------|--------------------------------|---------------|--------|---------------------------------------------------------|--------------------------------------------------------
+1           | 1         | 1          | Acme Master Services Agreement | MSA           | ACTIVE | Thu Jan 01 2026 00:00:00 GMT+0530 (India Standard Time) | Fri Jan 01 2027 00:00:00 GMT+0530 (India Standard Time)
+2           | 2         | 1          | Globex Delivery SOW            | SOW           | DRAFT  | Sun Mar 01 2026 00:00:00 GMT+0530 (India Standard Time) | Thu Dec 31 2026 00:00:00 GMT+0530 (India Standard Time)
+
+Total rows: 2
+
+
+--- TABLE: clause (Count: 3) ---
+SQL: SELECT clause_id, contract_id, clause_text, clause_type, is_flagged, 
+             vector_dims(embedding) AS vector_dims, 
+             left(embedding::text, 40) || '...' AS embedding_preview 
+      FROM clause ORDER BY clause_id
+
+clause_id | contract_id | clause_text                                                                                                                                               | clause_type | is_flagged | vector_dims | embedding_preview                          
+----------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|------------|-------------|--------------------------------------------
+1         | 1           | Either party may terminate this agreement upon thirty (30) days written notice.                                                                           | TERMINATION | true       | 384         | [0.016872235,0.059388466,0.050099757,-0....
+5         | 1           | This agreement may be ended by either company by providing thirty days written notice beforehand, and pending fees shall be paid.                         | Termination | false      | 384         | [0.01619367,0.020765496,0.028218038,-0.0...
+6         | 1           | The client reserves the sole and exclusive right to instantly cancel all project activities without financial settlement, penalty, or prior announcement. | Termination | true       | 384         | [-0.022497099,0.12855953,-0.0077905776,-...
+
+Total rows: 3
+
+
+--- TABLE: approval_step (Count: 2) ---
+SQL: SELECT approval_id, contract_id, approver_id, status, acted_at FROM approval_step ORDER BY approval_id
+
+approval_id | contract_id | approver_id | status   | acted_at                                               
+------------|-------------|-------------|----------|--------------------------------------------------------
+1           | 1           | 1           | APPROVED | Sun Nov 15 2026 16:32:55 GMT+0530 (India Standard Time)
+2           | 1           | 3           | APPROVED | Sun Nov 15 2026 16:31:13 GMT+0530 (India Standard Time)
+
+Total rows: 2
+
+
+--- TABLE: milestone (Count: 6) ---
+SQL: SELECT milestone_id, contract_id, description, due_date, amount, status FROM milestone ORDER BY milestone_id
+
+milestone_id | contract_id | description                                   | due_date                                                | amount   | status   
+-------------|-------------|-----------------------------------------------|---------------------------------------------------------|----------|----------
+5            | 1           | Initial Architecture Design & Review          | Sun Mar 15 2026 00:00:00 GMT+0530 (India Standard Time) | 15000.00 | COMPLETED
+6            | 1           | Alpha Release and Core Backend Implementation | Fri May 01 2026 00:00:00 GMT+0530 (India Standard Time) | 25000.00 | PENDING  
+7            | 1           | Beta Testing and Security Audit               | Wed Jul 15 2026 00:00:00 GMT+0530 (India Standard Time) | 10000.00 | PENDING  
+8            | 2           | Legal Documentation Handover                  | Tue Feb 10 2026 00:00:00 GMT+0530 (India Standard Time) | 5000.00  | COMPLETED
+9            | 2           | Compliance Verification Phase 1               | Wed Apr 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+10           | 2           | Final Compliance Sign-off                     | Mon Jun 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+
+Total rows: 6
+
+
+--- TABLE: review_queue (Count: 2) ---
+SQL: SELECT review_id, clause_id, reviewed_by, flagged_at, resolution_status FROM review_queue ORDER BY review_id
+
+review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
+----------|-----------|-------------|---------------------------------------------------------|------------------
+1         | 1         | 1           | Sun Nov 15 2026 15:46:16 GMT+0530 (India Standard Time) | ACCEPTED         
+2         | 6         | 1           | Sun Nov 15 2026 20:19:50 GMT+0530 (India Standard Time) | ACCEPTED         
+
+Total rows: 2
+
+
+--- TABLE: audit_log (Count: 5) ---
+SQL: SELECT log_id, user_id, action, entity, entity_id, created_at FROM audit_log ORDER BY log_id DESC
+
+log_id | user_id | action                            | entity   | entity_id | created_at                                             
+-------|---------|-----------------------------------|----------|-----------|--------------------------------------------------------
+5      | 1       | STATUS PENDING_APPROVAL -> ACTIVE | contract | 1         | Sun Nov 15 2026 16:32:55 GMT+0530 (India Standard Time)
+4      |         | STATUS ACTIVE -> PENDING_APPROVAL | contract | 1         | Sun Nov 15 2026 15:50:11 GMT+0530 (India Standard Time)
+3      | 3       | STATUS PENDING_APPROVAL -> ACTIVE | contract | 1         | Sun Nov 15 2026 15:49:57 GMT+0530 (India Standard Time)
+2      |         | STATUS ACTIVE -> PENDING_APPROVAL | contract | 1         | Sun Nov 15 2026 15:47:24 GMT+0530 (India Standard Time)
+1      |         | STATUS PENDING_APPROVAL -> ACTIVE | contract | 1         | Sun Nov 01 2026 08:27:27 GMT+0530 (India Standard Time)
+
+Total rows: 5
+
+

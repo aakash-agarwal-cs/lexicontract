@@ -1,0 +1,19 @@
+=== 15: LOCAL PGVECTOR EMBEDDING TEST (scripts/test-embed.mjs) ===
+
+Command:
+node scripts/test-embed.mjs
+
+Model:
+Xenova/all-MiniLM-L6-v2 (local in-process ONNX transformer pipeline)
+
+Output:
+length: 384
+similar clauses: 0.670
+unrelated clauses: 0.100
+
+Explanation:
+- Clause A: "Either party may terminate this agreement with 30 days written notice."
+- Clause B: "This contract can be ended by either side after giving a month's notice."
+- Clause C: "The vendor shall deliver the goods to the warehouse in Mumbai."
+- Cosine similarity between similar clauses (A & B): 0.670 (above 0.600 threshold).
+- Cosine similarity between unrelated clauses (A & C): 0.100 (well below 0.600 threshold).

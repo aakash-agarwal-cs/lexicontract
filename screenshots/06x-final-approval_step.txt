@@ -1,0 +1,9 @@
+--- TABLE: approval_step (Count: 2) ---
+SQL: SELECT approval_id, contract_id, approver_id, status, acted_at FROM approval_step ORDER BY approval_id
+
+approval_id | contract_id | approver_id | status   | acted_at                                               
+------------|-------------|-------------|----------|--------------------------------------------------------
+1           | 1           | 1           | APPROVED | Sun Nov 15 2026 16:32:55 GMT+0530 (India Standard Time)
+2           | 1           | 3           | APPROVED | Sun Nov 15 2026 16:31:13 GMT+0530 (India Standard Time)
+
+Total rows: 2

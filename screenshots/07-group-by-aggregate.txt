@@ -1,0 +1,15 @@
+=== 07: GROUP BY AND AGGREGATE (CONTRACTS PER STATUS) ===
+
+SQL:
+SELECT status, COUNT(*)::int AS contract_count
+      FROM contract
+      GROUP BY status
+      ORDER BY contract_count DESC;
+
+OUTPUT:
+status | contract_count
+-------|---------------
+ACTIVE | 1             
+DRAFT  | 1             
+
+Total rows: 2

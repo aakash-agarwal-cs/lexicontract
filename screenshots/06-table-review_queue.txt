@@ -1,0 +1,8 @@
+--- TABLE: review_queue (Count: 1) ---
+SQL: SELECT review_id, clause_id, reviewed_by, flagged_at, resolution_status FROM review_queue ORDER BY review_id
+
+review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
+----------|-----------|-------------|---------------------------------------------------------|------------------
+1         | 1         | 1           | Sun Nov 15 2026 15:46:16 GMT+0530 (India Standard Time) | ACCEPTED         
+
+Total rows: 1

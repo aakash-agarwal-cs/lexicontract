@@ -1,0 +1,62 @@
+=== 02: COLUMNS, TYPES, AND DEFAULTS PER TABLE ===
+
+table_name                 | column_name          | data_type                   | udt_name  | is_nullable | column_default                                             
+---------------------------|----------------------|-----------------------------|-----------|-------------|------------------------------------------------------------
+app_user                   | user_id              | integer                     | int4      | NO          | nextval('app_user_user_id_seq'::regclass)                  
+app_user                   | full_name            | character varying           | varchar   | NO          |                                                            
+app_user                   | email                | character varying           | varchar   | NO          |                                                            
+app_user                   | password_hash        | character varying           | varchar   | NO          |                                                            
+app_user                   | role_id              | integer                     | int4      | NO          |                                                            
+approval_step              | approval_id          | integer                     | int4      | NO          | nextval('approval_step_approval_id_seq'::regclass)         
+approval_step              | contract_id          | integer                     | int4      | NO          |                                                            
+approval_step              | approver_id          | integer                     | int4      | NO          |                                                            
+approval_step              | status               | character varying           | varchar   | NO          | 'PENDING'::character varying                               
+approval_step              | acted_at             | timestamp without time zone | timestamp | YES         |                                                            
+audit_log                  | log_id               | integer                     | int4      | NO          | nextval('audit_log_log_id_seq'::regclass)                  
+audit_log                  | user_id              | integer                     | int4      | YES         |                                                            
+audit_log                  | action               | character varying           | varchar   | NO          |                                                            
+audit_log                  | entity               | character varying           | varchar   | NO          |                                                            
+audit_log                  | entity_id            | integer                     | int4      | NO          |                                                            
+audit_log                  | created_at           | timestamp without time zone | timestamp | YES         | CURRENT_TIMESTAMP                                          
+clause                     | clause_id            | integer                     | int4      | NO          | nextval('clause_clause_id_seq'::regclass)                  
+clause                     | contract_id          | integer                     | int4      | NO          |                                                            
+clause                     | clause_text          | text                        | text      | NO          |                                                            
+clause                     | clause_type          | character varying           | varchar   | YES         |                                                            
+clause                     | is_flagged           | boolean                     | bool      | YES         | false                                                      
+clause                     | embedding            | USER-DEFINED                | vector    | YES         |                                                            
+contract                   | contract_id          | integer                     | int4      | NO          | nextval('contract_contract_id_seq'::regclass)              
+contract                   | vendor_id            | integer                     | int4      | NO          |                                                            
+contract                   | created_by           | integer                     | int4      | NO          |                                                            
+contract                   | title                | character varying           | varchar   | NO          |                                                            
+contract                   | contract_type        | character varying           | varchar   | NO          |                                                            
+contract                   | status               | character varying           | varchar   | NO          | 'DRAFT'::character varying                                 
+contract                   | start_date           | date                        | date      | YES         |                                                            
+contract                   | end_date             | date                        | date      | YES         |                                                            
+milestone                  | milestone_id         | integer                     | int4      | NO          | nextval('milestone_milestone_id_seq'::regclass)            
+milestone                  | contract_id          | integer                     | int4      | NO          |                                                            
+milestone                  | description          | text                        | text      | NO          |                                                            
+milestone                  | due_date             | date                        | date      | NO          |                                                            
+milestone                  | amount               | numeric                     | numeric   | NO          |                                                            
+milestone                  | status               | character varying           | varchar   | NO          | 'PENDING'::character varying                               
+review_queue               | review_id            | integer                     | int4      | NO          | nextval('review_queue_review_id_seq'::regclass)            
+review_queue               | clause_id            | integer                     | int4      | NO          |                                                            
+review_queue               | reviewed_by          | integer                     | int4      | YES         |                                                            
+review_queue               | flagged_at           | timestamp without time zone | timestamp | YES         | CURRENT_TIMESTAMP                                          
+review_queue               | resolution_status    | character varying           | varchar   | YES         | 'UNRESOLVED'::character varying                            
+role                       | role_id              | integer                     | int4      | NO          | nextval('role_role_id_seq'::regclass)                      
+role                       | role_name            | character varying           | varchar   | NO          |                                                            
+standard_clause            | standard_clause_id   | integer                     | int4      | NO          | nextval('standard_clause_standard_clause_id_seq'::regclass)
+standard_clause            | clause_type          | character varying           | varchar   | NO          |                                                            
+standard_clause            | clause_text          | text                        | text      | NO          |                                                            
+standard_clause            | embedding            | USER-DEFINED                | vector    | YES         |                                                            
+v_pending_contract_reviews | contract_id          | integer                     | int4      | YES         |                                                            
+v_pending_contract_reviews | title                | character varying           | varchar   | YES         |                                                            
+v_pending_contract_reviews | vendor_name          | character varying           | varchar   | YES         |                                                            
+v_pending_contract_reviews | flagged_clause_count | bigint                      | int8      | YES         |                                                            
+vendor                     | vendor_id            | integer                     | int4      | NO          | nextval('vendor_vendor_id_seq'::regclass)                  
+vendor                     | name                 | character varying           | varchar   | NO          |                                                            
+vendor                     | registration_number  | character varying           | varchar   | YES         |                                                            
+vendor                     | contact_email        | character varying           | varchar   | NO          |                                                            
+vendor                     | contact_phone        | character varying           | varchar   | YES         |                                                            
+
+Total rows: 56

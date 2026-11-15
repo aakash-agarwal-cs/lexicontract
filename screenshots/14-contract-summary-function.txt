@@ -1,0 +1,11 @@
+=== 14: STORED FUNCTION EXECUTION: get_contract_summary(1) ===
+
+SQL:
+SELECT * FROM get_contract_summary(1);
+
+OUTPUT:
+total_milestones | completed_milestones | total_value | completed_value
+-----------------|----------------------|-------------|----------------
+3                | 1                    | 50000.00    | 15000.00       
+
+Total rows: 1

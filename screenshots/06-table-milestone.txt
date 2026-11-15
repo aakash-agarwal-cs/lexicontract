@@ -1,0 +1,14 @@
+--- TABLE: milestone (Count: 7) ---
+SQL: SELECT milestone_id, contract_id, description, due_date, amount, status FROM milestone ORDER BY milestone_id
+
+milestone_id | contract_id | description                                   | due_date                                                | amount   | status   
+-------------|-------------|-----------------------------------------------|---------------------------------------------------------|----------|----------
+5            | 1           | Initial Architecture Design & Review          | Sun Mar 15 2026 00:00:00 GMT+0530 (India Standard Time) | 15000.00 | COMPLETED
+6            | 1           | Alpha Release and Core Backend Implementation | Fri May 01 2026 00:00:00 GMT+0530 (India Standard Time) | 25000.00 | PENDING  
+7            | 1           | Beta Testing and Security Audit               | Wed Jul 15 2026 00:00:00 GMT+0530 (India Standard Time) | 10000.00 | PENDING  
+8            | 2           | Legal Documentation Handover                  | Tue Feb 10 2026 00:00:00 GMT+0530 (India Standard Time) | 5000.00  | COMPLETED
+9            | 2           | Compliance Verification Phase 1               | Wed Apr 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+10           | 2           | Final Compliance Sign-off                     | Mon Jun 01 2026 00:00:00 GMT+0530 (India Standard Time) | 7500.00  | PENDING  
+11           | 2           | wfefsdfs                                      | Thu Jun 11 2026 00:00:00 GMT+0530 (India Standard Time) | 20000.00 | PENDING  
+
+Total rows: 7
