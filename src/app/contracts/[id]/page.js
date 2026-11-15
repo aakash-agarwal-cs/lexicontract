@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import AddClauseForm from "./AddClauseForm";
 
 export default function ContractDetailPage() {
   const params = useParams();
@@ -128,6 +129,7 @@ export default function ContractDetailPage() {
             <Link href="/" className="text-blue-600 hover:underline">Home</Link>
             <Link href="/vendors" className="text-blue-600 hover:underline">Vendors</Link>
             <Link href="/reports" className="text-blue-600 hover:underline">Reports</Link>
+            <Link href="/review-queue" className="text-blue-600 hover:underline">Review Queue</Link>
           </div>
         </div>
 
@@ -190,6 +192,13 @@ export default function ContractDetailPage() {
             </div>
           )}
         </div>
+
+        {/* Add Clause Form (Admin Only) */}
+        <AddClauseForm
+          contractId={id}
+          onClauseAdded={fetchContractDetail}
+          isAdmin={user?.role === "ADMIN"}
+        />
 
         {/* Milestones Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">

@@ -16,6 +16,7 @@ export default async function Home() {
         <div className="space-y-3">
           <Link href="/vendors" className="block w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Manage Vendors</Link>
           <Link href="/contracts" className="block w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Manage Contracts</Link>
+          <Link href="/review-queue" className="block w-full bg-amber-600 text-white p-2 rounded hover:bg-amber-700">Review Queue</Link>
           <Link href="/reports" className="block w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700">View Reports</Link>
         </div>
       </div>
