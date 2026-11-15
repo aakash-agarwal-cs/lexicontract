@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import AddClauseForm from "./AddClauseForm";
+import ApprovalStepsSection from "./ApprovalStepsSection";
 
 export default function ContractDetailPage() {
   const params = useParams();
@@ -118,7 +119,7 @@ export default function ContractDetailPage() {
   if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
   if (!data) return <div className="p-8 text-center">Contract not found.</div>;
 
-  const { contract, clauses, milestones, summary } = data;
+  const { contract, clauses, milestones, summary, approval_steps = [] } = data;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -172,6 +173,14 @@ export default function ContractDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Approval Workflow & Audit Section */}
+        <ApprovalStepsSection
+          contractId={id}
+          approvalSteps={approval_steps}
+          currentUser={user}
+          onStatusChange={fetchContractDetail}
+        />
 
         {/* Clauses Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">

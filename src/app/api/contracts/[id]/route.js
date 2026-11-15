@@ -36,11 +36,24 @@ export async function GET(request, { params }) {
     const summaryQuery = `SELECT * FROM get_contract_summary($1);`;
     const summaryRes = await pool.query(summaryQuery, [id]);
 
+    // 5. Fetch Approval Steps
+    const approvalStepsQuery = `
+      SELECT a.approval_id, a.contract_id, a.approver_id, a.status, a.acted_at,
+             u.full_name AS approver_name, u.email AS approver_email, r.role_name AS approver_role
+      FROM approval_step a
+      JOIN app_user u ON a.approver_id = u.user_id
+      JOIN role r ON u.role_id = r.role_id
+      WHERE a.contract_id = $1
+      ORDER BY a.approval_id ASC;
+    `;
+    const approvalStepsRes = await pool.query(approvalStepsQuery, [id]);
+
     return NextResponse.json({
       contract: contractRes.rows[0],
       clauses: clausesRes.rows.length > 0 ? clausesRes.rows : [],
       milestones: milestonesRes.rows,
       summary: summaryRes.rows[0] || { total_milestones: 0, completed_milestones: 0, total_value: 0, completed_value: 0 },
+      approval_steps: approvalStepsRes.rows,
     });
   } catch (err) {
     console.error("API Error in /api/contracts/[id]:", err);
