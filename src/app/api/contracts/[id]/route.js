@@ -13,7 +13,10 @@ export async function GET(request, { params }) {
 
     // 1. Fetch Contract and Vendor details (fixed v.name AS vendor_name)
     const contractQuery = `
-      SELECT c.*, v.name AS vendor_name, v.registration_number, v.contact_email, v.contact_phone
+      SELECT c.contract_id, c.vendor_id, c.created_by, c.title, c.contract_type, c.status,
+             to_char(c.start_date, 'YYYY-MM-DD') AS start_date,
+             to_char(c.end_date, 'YYYY-MM-DD') AS end_date,
+             v.name AS vendor_name, v.registration_number, v.contact_email, v.contact_phone
       FROM contract c
       JOIN vendor v ON c.vendor_id = v.vendor_id
       WHERE c.contract_id = $1;
@@ -29,7 +32,14 @@ export async function GET(request, { params }) {
     const clausesRes = await pool.query(clausesQuery, [id]);
 
     // 3. Fetch Milestones
-    const milestonesQuery = `SELECT * FROM milestone WHERE contract_id = $1 ORDER BY due_date ASC;`;
+    const milestonesQuery = `
+      SELECT milestone_id, contract_id, description,
+             to_char(due_date, 'YYYY-MM-DD') AS due_date,
+             amount, status
+      FROM milestone 
+      WHERE contract_id = $1 
+      ORDER BY due_date ASC;
+    `;
     const milestonesRes = await pool.query(milestonesQuery, [id]);
 
     // 4. Fetch Contract Summary using the Stored Function

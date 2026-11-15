@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function AddClauseForm({ contractId, onClauseAdded, isAdmin }) {
   const [clauseText, setClauseText] = useState("");
-  const [clauseType, setClauseType] = useState("TERMINATION");
+  const [clauseType, setClauseType] = useState("Termination");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState("");
@@ -94,13 +94,14 @@ export default function AddClauseForm({ contractId, onClauseAdded, isAdmin }) {
             onChange={(e) => setClauseType(e.target.value)}
             className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white"
           >
-            <option value="TERMINATION">TERMINATION</option>
-            <option value="PAYMENT">PAYMENT</option>
-            <option value="CONFIDENTIALITY">CONFIDENTIALITY</option>
-            <option value="LIABILITY">LIABILITY</option>
-            <option value="INDEMNITY">INDEMNITY</option>
-            <option value="INTELLECTUAL_PROPERTY">INTELLECTUAL_PROPERTY</option>
-            <option value="GENERAL">GENERAL</option>
+            <option value="Termination">Termination</option>
+            <option value="Liability Cap">Liability Cap</option>
+            <option value="Confidentiality">Confidentiality</option>
+            <option value="Payment Terms">Payment Terms</option>
+            <option value="Indemnity">Indemnity</option>
+            <option value="Governing Law">Governing Law</option>
+            <option value="Force Majeure">Force Majeure</option>
+            <option value="Dispute Resolution">Dispute Resolution</option>
           </select>
         </div>
 

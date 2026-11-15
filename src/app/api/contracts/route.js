@@ -13,7 +13,10 @@ export async function GET(request) {
     const status = searchParams.get("status");
 
     let query = `
-      SELECT c.*, v.name AS vendor_name 
+      SELECT c.contract_id, c.vendor_id, c.created_by, c.title, c.contract_type, c.status,
+             to_char(c.start_date, 'YYYY-MM-DD') AS start_date,
+             to_char(c.end_date, 'YYYY-MM-DD') AS end_date,
+             v.name AS vendor_name 
       FROM contract c
       JOIN vendor v ON c.vendor_id = v.vendor_id
     `;
@@ -53,7 +56,9 @@ export async function POST(request) {
     const query = `
       INSERT INTO contract (vendor_id, created_by, title, contract_type, status, start_date, end_date)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *;
+      RETURNING contract_id, vendor_id, created_by, title, contract_type, status,
+                to_char(start_date, 'YYYY-MM-DD') AS start_date,
+                to_char(end_date, 'YYYY-MM-DD') AS end_date;
     `;
     const values = [
       vendor_id,

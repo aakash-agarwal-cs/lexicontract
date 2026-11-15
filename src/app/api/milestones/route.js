@@ -22,7 +22,9 @@ export async function POST(request) {
     const query = `
       INSERT INTO milestone (contract_id, description, due_date, amount, status)
       VALUES ($1, $2, $3, $4, $5)
-      RETURNING *;
+      RETURNING milestone_id, contract_id, description,
+                to_char(due_date, 'YYYY-MM-DD') AS due_date,
+                amount, status;
     `;
     const values = [contract_id, description, due_date, amount, status || "PENDING"];
     const result = await pool.query(query, values);

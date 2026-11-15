@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function ContractsPage() {
   const [contracts, setContracts] = useState([]);
   const [vendors, setVendors] = useState([]);
+  const [user, setUser] = useState(null);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,9 +20,22 @@ export default function ContractsPage() {
   const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
+    fetchSession();
     fetchContracts();
     fetchVendors();
   }, [statusFilter]);
+
+  async function fetchSession() {
+    try {
+      const res = await fetch("/api/me");
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch session");
+    }
+  }
 
   async function fetchContracts() {
     try {
@@ -150,51 +164,57 @@ export default function ContractsPage() {
           </table>
         </div>
 
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Add New Contract (Admin Only)</h2>
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Vendor</label>
-              <select required value={vendorId} onChange={(e) => setVendorId(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
-                <option value="">Select Vendor</option>
-                {vendors.map((v) => (
-                  <option key={v.vendor_id} value={v.vendor_id}>{v.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Title</label>
-              <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Contract Type</label>
-              <select value={contractType} onChange={(e) => setContractType(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
-                <option value="MSA">MSA</option>
-                <option value="SOW">SOW</option>
-                <option value="NDA">NDA</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Status</label>
-              <select value={status} onChange={(e) => setStatus(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
-                <option value="DRAFT">DRAFT</option>
-                <option value="PENDING_APPROVAL">PENDING_APPROVAL</option>
-                <option value="ACTIVE">ACTIVE</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Start Date</label>
-              <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">End Date</label>
-              <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
-            </div>
-            <div className="sm:col-span-2">
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Create Contract</button>
-            </div>
-          </form>
-        </div>
+        {user?.role === "ADMIN" ? (
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">Add New Contract (Admin Only)</h2>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Vendor</label>
+                <select required value={vendorId} onChange={(e) => setVendorId(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
+                  <option value="">Select Vendor</option>
+                  {vendors.map((v) => (
+                    <option key={v.vendor_id} value={v.vendor_id}>{v.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Contract Type</label>
+                <select value={contractType} onChange={(e) => setContractType(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
+                  <option value="MSA">MSA</option>
+                  <option value="SOW">SOW</option>
+                  <option value="NDA">NDA</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Status</label>
+                <select value={status} onChange={(e) => setStatus(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
+                  <option value="DRAFT">DRAFT</option>
+                  <option value="PENDING_APPROVAL">PENDING_APPROVAL</option>
+                  <option value="ACTIVE">ACTIVE</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
+              </div>
+              <div className="sm:col-span-2">
+                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Create Contract</button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg text-sm">
+            Note: You are logged in as a <strong>Reviewer</strong>. Contract creation is restricted to Administrators.
+          </div>
+        )}
       </div>
     </div>
   );
