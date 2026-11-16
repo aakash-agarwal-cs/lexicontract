@@ -1,8 +1,5 @@
 --- TABLE: clause (Count: 3) ---
-SQL: SELECT clause_id, contract_id, clause_text, clause_type, is_flagged, 
-               vector_dims(embedding) AS vector_dims, 
-               left(embedding::text, 40) || '...' AS embedding_preview 
-        FROM clause ORDER BY clause_id;
+SQL: SELECT clause_id, contract_id, clause_text, clause_type, is_flagged, vector_dims(embedding) AS vector_dims, left(embedding::text, 40) || '...' AS embedding_preview FROM clause ORDER BY clause_id;
 
 clause_id | contract_id | clause_text                                                                                                                                               | clause_type | is_flagged | vector_dims | embedding_preview                          
 ----------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|------------|-------------|--------------------------------------------

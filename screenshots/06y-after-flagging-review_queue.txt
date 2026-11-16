@@ -1,6 +1,5 @@
 --- TABLE: review_queue (Count: 2) ---
-SQL: SELECT review_id, clause_id, reviewed_by, flagged_at, resolution_status 
-        FROM review_queue ORDER BY review_id;
+SQL: SELECT review_id, clause_id, reviewed_by, flagged_at, resolution_status FROM review_queue ORDER BY review_id;
 
 review_id | clause_id | reviewed_by | flagged_at                                              | resolution_status
 ----------|-----------|-------------|---------------------------------------------------------|------------------
